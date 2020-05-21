@@ -1,12 +1,12 @@
 module.exports = {
   globDirectory: 'build/',
   globPatterns: [
-    "**/*.{ico,html,js,css}"
+    "**/*.{png,ico,html,js,css,json}"
   ],
   globIgnores: [
     "**/sw.js",
     "node_modules/**/*"
   ],
-  swDest: 'build/sw.js',
-  swSrc: 'src/sw.js',
+  swDest: 'public/sw-build.js',
+  swSrc: 'public/sw.js',
 };

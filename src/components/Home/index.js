@@ -13,7 +13,6 @@ const Home = () => {
         const fetchPopularVideo = async () => {
             await videos.get(popularVideoUrl)
                 .then(response => {
-                    console.log(response.data.slice(0, 10));
                     setPopularVideo(response.data.slice(0, 10));
                 })
                 .catch(e => {

@@ -1,5 +1,5 @@
-import styled from 'styled-components'
-
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 export const LogoContainer = styled.li`
     @media screen and (max-width: 1052px){
         display: none;
@@ -7,6 +7,10 @@ export const LogoContainer = styled.li`
     flex: 1;
     font-size: 30px;
     font-weight: 700;
+    a{
+        text-decoration: none;
+        color: #36CACC;
+    }
 `
 
 export const MenuContainer = styled.li`
@@ -21,6 +25,7 @@ export const MenuContainer = styled.li`
     @media screen and (max-width: 312px){
         display: none;
     }
+    z-index: 3;
     font-size: 30px;
     flex: 1;
     padding: 0 40px;
@@ -35,7 +40,6 @@ export const MenuContainer = styled.li`
     }
     span:before{
         content: '${(props) => (props.isToggled ? "\f00d" : "\f0c9")}';
-        /* content: "\f00d"; */
     }
 
 `
@@ -43,9 +47,8 @@ export const ItemsStyle = styled.div`
     @media screen and (max-width: 1052px){
         flex:4;
     }
-        padding: 10px 40px 10px 0px;
     @media screen and (max-width: 800px){
-        z-index: -1;
+        z-index: ${(props) => props.isToggled ? 2 : -1};
         position: fixed;
         top: ${(props) => props.isToggled ? "60px" : "-220px"};
         right: 0px;
@@ -58,21 +61,24 @@ export const ItemsStyle = styled.div`
             line-height: 30px;
             margin: 30px 0;
         }
-        a{
-            font-size: 19px;
-        }
     }
+    padding: 10px 40px 10px 0px;
     padding: 0 25px;
     display: inline-flex;
-    a{
-        text-decoration: none;
-        font-size: 18px;
-        padding: 0 12px;
-    }
+`
 
-    a:hover{
+export const LinkStyle = styled(Link)`
+    @media screen and (max-width: 800px){   
+        font-size: 19px;
+        z-index: -1;
+    }
+    font-size: 18px;
+    padding: 0 12px;
+
+    :hover{
         color: cyan;
     }
+    color: white;
 `
 
 export const SearchIconStyle = styled.li`
@@ -81,6 +87,8 @@ export const SearchIconStyle = styled.li`
     display: flex;
     background: #f2f2f2;
     border-radius: 5px;
+    margin-top: 8px;
+    z-index: 3;
     input{
         height: 100%;
         width: 200px;

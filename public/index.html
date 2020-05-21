@@ -10,6 +10,7 @@
       content="Web site created using create-react-app"
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link ret="stylesheet" href="%PUBLIC_URL%/nav.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ=" crossorigin="anonymous" />
     <!--
       manifest.json provides metadata used when your web app is installed on a
@@ -25,115 +26,20 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+    <title>TV Info App</title>
     <style>
-      .loader {
-        font-size: 10px;
-        margin: 50px auto;
-        text-indent: -9999em;
-        width: 11em;
-        height: 11em;
-        border-radius: 50%;
-        background: #0dc5c1;
-        background: -moz-linear-gradient(left, #0dc5c1 10%, rgba(255, 255, 255, 0) 42%);
-        background: -webkit-linear-gradient(left, #0dc5c1 10%, rgba(255, 255, 255, 0) 42%);
-        background: -o-linear-gradient(left, #0dc5c1 10%, rgba(255, 255, 255, 0) 42%);
-        background: -ms-linear-gradient(left, #0dc5c1 10%, rgba(255, 255, 255, 0) 42%);
-        background: linear-gradient(to right, #0dc5c1 10%, rgba(255, 255, 255, 0) 42%);
-        position: relative;
-        -webkit-animation: load3 1.4s infinite linear;
-        animation: load3 1.4s infinite linear;
-        -webkit-transform: translateZ(0);
-        -ms-transform: translateZ(0);
-        transform: translateZ(0);
-      }
-      .loader:before {
-        width: 50%;
-        height: 50%;
-        background: #0dc5c1;
-        border-radius: 100% 0 0 0;
-        position: absolute;
-        top: 0;
-        left: 0;
-        content: '';
-      }
-      .loader:after {
-        background: #ffffff;
-        width: 75%;
-        height: 75%;
-        border-radius: 50%;
-        content: '';
-        margin: auto;
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-      }
-      @-webkit-keyframes load3 {
-        0% {
-          -webkit-transform: rotate(0deg);
-          transform: rotate(0deg);
-        }
-        100% {
-          -webkit-transform: rotate(360deg);
-          transform: rotate(360deg);
-        }
-      }
-      @keyframes load3 {
-        0% {
-          -webkit-transform: rotate(0deg);
-          transform: rotate(0deg);
-        }
-        100% {
-          -webkit-transform: rotate(360deg);
-          transform: rotate(360deg);
-        }
-      }
-
-      body {
-        margin: 0;
-        font-family: Arial, Helvetica, sans-serif;
-      }
-      
-      .topnav {
+       .topnav {
         overflow: hidden;
         background-color: #333;
+        height: 80px;
       }
-      
-      .topnav a {
-        float: left;
-        display: block;
-        color: #f2f2f2;
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-        font-size: 17px;
-      }
-      
-      .topnav a:hover {
-        background-color: #ddd;
-        color: black;
-      }
-      
-      .topnav a.active {
-        background-color: #36CACC;
-        color: white;
-      }
-      
-      .topnav .icon {
-        display: none;
-      }
+  
     </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root">
       <div class="topnav" id="myTopnav">
-        <a href="/" class="active">Tvmaze</a>
-        <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-          <i class="fa fa-bars"></i>
-        </a>
       </div>
       <div class="loader">Loading...</div>
     </div>
@@ -149,17 +55,34 @@
     -->
 
     <script>
+      console.log("start register")
       const isProduction = ('%NODE_ENV%' === 'production');
-
-      if(isProduction && 'serviceWorker' in navigator){
-        console.log("service worker registered!")
-        navigator.serviceWorker.register('sw.js')
+      if('serviceWorker' in navigator){
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('%PUBLIC_URL%/sw-build.js', {
+            useCache: true
+          })
           .then(swReq => {
-            console.log("Worker Registered!")
+            console.log("Worker Registered!");
+            // const channel = new BroadcastChannel('service-worker-channel');
+
+            // channel.onmessage = (message) => {
+            //   if (message.data.promptToReload) {
+            //     if (confirm('Updates available. Would you like to reload?')) {
+            //       channel.postMessage({ skipWaiting: true });
+            //     };
+            //   }
+            // }
+
+            // navigator.serviceWorker.addEventListener('controllerchange', () => {
+            //   window.location.reload();
+            // });
           })
           .catch(e => {
-            console.log("There was an error")
-          });
+             console.log("Register failed : ", e);
+             console.log()
+          }); 
+        });
       }
     </script>
 

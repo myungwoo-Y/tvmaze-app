@@ -1,27 +1,54 @@
 import React, {useState} from 'react';
-import {LogoContainer, ItemsStyle, SearchIconStyle, NavStyle, MenuContainer} from './Header.styles'
-import { Link } from 'react-router';
-const Header = () => {
+import {LogoContainer, ItemsStyle, SearchIconStyle, NavStyle, MenuContainer, LinkStyle} from './Header.styles'
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { fetchSearch } from '../../actions';
+
+const Header = ({ fetchSearch }) => {
     const [isToggled, setIsToggled] = useState(false);
+    const [searchWord, setSearchWord] = useState('');
     const clickMenu = () => {
         setIsToggled(!isToggled);
     }
+
+    const clickSearch = () => {
+        fetchSearch(searchWord);
+    }
+
+    const handleEnter = (event) => {
+        if(event.key === 'Enter'){
+            fetchSearch(searchWord);
+        }
+    }
+
+    const onSearchChange = (event) => {
+        setSearchWord(event.target.value);
+    }
+
     return(
         <NavStyle isToggled={isToggled}>
             <ul>
-                <LogoContainer>Tv Maze</LogoContainer>
+                <LogoContainer>
+                    <Link to="/">
+                        Tv Maze
+                    </Link>
+                </LogoContainer>
                 <MenuContainer isToggled={isToggled}>
                     <span className="fas fa-bars" onClick={clickMenu}></span>
                 </MenuContainer>
                 <ItemsStyle isToggled={isToggled}>
-                    <li><a herf="#">Home</a></li>
-                    <li><a herf="#">About</a></li>
-                    <li><a herf="#">Services</a></li>
-                    <li><a herf="#">Contact</a></li>
+                    <li><LinkStyle to="#">찜한 시리즈</LinkStyle></li>
+                    <li><LinkStyle to="#">Login</LinkStyle></li>
+                    <li><LinkStyle to="#">SignUp</LinkStyle></li>
                 </ItemsStyle>
                 <SearchIconStyle>
-                    <input type="search" placeholder="Search"/>
-                    <label>
+                    <input 
+                        type="search" 
+                        placeholder="Search"
+                        onChange={onSearchChange}
+                        onKeyDown={handleEnter}
+                    />
+                    <label onClick={clickSearch}>
                         <span className="fas fa-search"></span>
                     </label>
                 </SearchIconStyle>
@@ -29,5 +56,4 @@ const Header = () => {
         </NavStyle>
     )
 }
-
-export default Header;
+export default connect(null, { fetchSearch })(Header);

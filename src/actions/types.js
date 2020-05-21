@@ -1,1 +1,2 @@
 export const FETCH_POPULAR = 'FETCH_POPULAR';
+export const FETCH_SEARCH = 'FETCH_SEARCH';
