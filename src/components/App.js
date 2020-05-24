@@ -11,13 +11,11 @@ const App = () => {
     <div>
        <Router history={history}>
          <Header/>
-          <Container>
               <Switch>
                   <Route path="/" exact component={Home}/>
                   <Route path="/video/:id" exact component={VideoDetail}/>
                   <Route path="/search/:word" exact component={SearchResult}/>
               </Switch>
-          </Container> 
         </Router>
     </div>
   );

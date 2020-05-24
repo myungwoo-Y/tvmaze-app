@@ -29,10 +29,11 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && workbox injectManifest workbox-config.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "start-sw": "workbox injectManifest workbox-config.js && serve -s build"
+    "start-sw": "yarn build && workbox injectManifest workbox-config.js && serve -s build",
+    "test-sw" : "workbox injectManifest workbox-config.js && yarn start"
   },
   "eslintConfig": {
     "extends": "react-app"

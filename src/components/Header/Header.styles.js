@@ -41,8 +41,10 @@ export const MenuContainer = styled.li`
     span:before{
         content: '${(props) => (props.isToggled ? "\f00d" : "\f0c9")}';
     }
-
 `
+
+
+
 export const ItemsStyle = styled.div`
     @media screen and (max-width: 1052px){
         flex:4;
@@ -50,7 +52,8 @@ export const ItemsStyle = styled.div`
     @media screen and (max-width: 800px){
         z-index: ${(props) => props.isToggled ? 2 : -1};
         position: fixed;
-        top: ${(props) => props.isToggled ? "60px" : "-220px"};
+        top: ${(props) => props.isToggled ? "0" : "-220px"};
+        padding-top: ${(props) => props.isToggled ? "40px" : "0"};
         right: 0px;
         width: 100%;
         background: #222222;
@@ -125,8 +128,8 @@ export const NavStyle = styled.nav`
     @media screen and (max-width: 360px){
         padding: 10px 20px 0 0;
     }
-    @media screen and (max-width: 300px){
-        padding: 10px 10px 0 0;
+    @media screen and (max-width: 312px){
+        padding: 10px 0 0 0;
     }
     background: #222222;
     color: white;

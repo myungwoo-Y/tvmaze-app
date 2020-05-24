@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import videos from '../../apis/videos';
-import { imageValidation, removeTagInString } from '../../utils';
+import { imageOriginalValidation, removeTagInString } from '../../utils';
 import { EpisodeListContainer } from './SeasonsShow.styles';
 import { Row, Col, CardGroup, Card } from 'react-bootstrap';
 const EpisodeList = ({episodes, seasonNumber}) => {
@@ -16,7 +16,7 @@ const EpisodeList = ({episodes, seasonNumber}) => {
             return <></>;
         }
         return episodesById.map((episode, i) => {
-            const image = imageValidation(episode.image);
+            const image = imageOriginalValidation(episode.image);
             const title = episode.name;
             const description = removeTagInString(episode.summary);
             return(

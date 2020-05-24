@@ -25,6 +25,10 @@ const Header = ({ fetchSearch }) => {
         setSearchWord(event.target.value);
     }
 
+    const handleLinckClick = (event) => {
+        setIsToggled(false);
+    }
+
     return(
         <NavStyle isToggled={isToggled}>
             <ul>
@@ -37,9 +41,38 @@ const Header = ({ fetchSearch }) => {
                     <span className="fas fa-bars" onClick={clickMenu}></span>
                 </MenuContainer>
                 <ItemsStyle isToggled={isToggled}>
-                    <li><LinkStyle to="#">찜한 시리즈</LinkStyle></li>
-                    <li><LinkStyle to="#">Login</LinkStyle></li>
-                    <li><LinkStyle to="#">SignUp</LinkStyle></li>
+                    <li>
+                        <LinkStyle 
+                            onClick={handleLinckClick} 
+                            to="/"
+                        >
+                            Home
+                        </LinkStyle>
+                    </li>
+                    <li>
+                        <LinkStyle 
+                            onClick={handleLinckClick} 
+                            to="/"
+                        >
+                            찜한 시리즈
+                        </LinkStyle>
+                    </li>
+                    <li>
+                        <LinkStyle 
+                            onClick={handleLinckClick} 
+                            to="/"
+                        >
+                            Login
+                        </LinkStyle>
+                    </li>
+                    <li>
+                        <LinkStyle 
+                            onClick={handleLinckClick} 
+                            to="/"
+                        >
+                            Sign Up
+                        </LinkStyle>
+                    </li>
                 </ItemsStyle>
                 <SearchIconStyle>
                     <input 

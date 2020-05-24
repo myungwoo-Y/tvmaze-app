@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import videos from '../../apis/videos';
 import {Card, Row, Col, OverlayTrigger, Tooltip} from 'react-bootstrap';
-import { HomeContainer } from './Home.styles'
 import history from '../../history';
+import VideoList from '../VideoList';
 const Home = () => {
 
     const [popularVideo, setPopularVideo] = useState([]);
 
-    const popularVideoUrl = '/shows?sortby=popularity&sortby_direction=desc&page=1';
+    const popularVideoUrl = '/schedule?country=US&date=2020-05-23';
 
     useEffect(() => {
         const fetchPopularVideo = async () => {
@@ -47,7 +47,10 @@ const Home = () => {
     }
 
     const popularVideoList = () => popularVideo.map((video) => (
-        <Col xs={6} md={3} key={video.id} className="mt-2 mb-2" onClick={() => videoClick(video.id)}>
+        <Col xs={12} md={6} lg={3} 
+        key={video.id} 
+        className="mt-2 mb-2" 
+        onClick={() => videoClick(video.id)}>
             <OverlayTrigger
                 placement='bottom'
                 overlay={
@@ -70,11 +73,12 @@ const Home = () => {
 
 
     return(
-        <HomeContainer>
-            <Row>
-                {popularVideoList()}
-            </Row>
-        </HomeContainer>
+        <div>
+            <VideoList
+                videos={popularVideo}
+                objectType="home"
+            />
+        </div>
     )
 }
 

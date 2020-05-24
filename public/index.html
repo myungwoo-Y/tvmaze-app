@@ -54,37 +54,7 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
 
-    <script>
-      console.log("start register")
-      const isProduction = ('%NODE_ENV%' === 'production');
-      if('serviceWorker' in navigator){
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('%PUBLIC_URL%/sw-build.js', {
-            useCache: true
-          })
-          .then(swReq => {
-            console.log("Worker Registered!");
-            // const channel = new BroadcastChannel('service-worker-channel');
 
-            // channel.onmessage = (message) => {
-            //   if (message.data.promptToReload) {
-            //     if (confirm('Updates available. Would you like to reload?')) {
-            //       channel.postMessage({ skipWaiting: true });
-            //     };
-            //   }
-            // }
-
-            // navigator.serviceWorker.addEventListener('controllerchange', () => {
-            //   window.location.reload();
-            // });
-          })
-          .catch(e => {
-             console.log("Register failed : ", e);
-             console.log()
-          }); 
-        });
-      }
-    </script>
 
   </body>
 </html>

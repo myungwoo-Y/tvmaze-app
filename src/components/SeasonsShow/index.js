@@ -3,7 +3,7 @@ import videos from '../../apis/videos'
 import ImageGallery from 'react-image-gallery';
 import { GalleryContainer, SeasonContainer, SeasonTitleStyle, DateStyle, SeasonDiscriptionStyle } from './SeasonsShow.styles';
 import { Row, Col } from 'react-bootstrap';
-import { imageValidation, removeTagInString } from '../../utils';
+import { imageMediumValidation, removeTagInString } from '../../utils';
 import EpisodeList from './EpisodeList';
 
 
@@ -34,7 +34,7 @@ const SeasonsShow = ({videoId}) => {
     const setDatasToItems = (datas) => {
         const newItems = [];
         datas.map((data, i) => {
-            const imageUrl = imageValidation(data.image);
+            const imageUrl = imageMediumValidation(data.image);
             newItems.push({
                 original: imageUrl,
                 thumbnail: imageUrl,

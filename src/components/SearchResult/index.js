@@ -2,20 +2,20 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import VideoList from '../VideoList';
 import { fetchSearch } from '../../actions';
+import { Container } from 'react-bootstrap';
 const SearchResult = ({videos, match, fetchSearch}) => {
-    // useEffect(() => {
-    //     if(videos.length == 0){
-    //         fetchSearch(match.params.word)
-    //         console.log("empty ", match.params.word)
-    //     }
-    // }, [])
-    console.log(videos)
+    useEffect(() => {
+        if(videos.length == 0){
+            fetchSearch(match.params.word)
+        }
+    }, [])
+    
     return(
-        <div>
+        <Container>
             <VideoList 
                 videos={videos}
             />
-        </div>
+        </Container>
     )
 }
 

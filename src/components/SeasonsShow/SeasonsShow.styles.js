@@ -23,8 +23,11 @@ export const DateStyle = styled.div`
 
 export const SeasonDiscriptionStyle = styled.div`
     ${media.greaterThan("991px")`
-        margin: 0 120px 0 120px;
         font-size: 18px;
+    `}
+    ${media.lessThan("medium")`
+        margin: 15px;
+        padding: 15px;
     `}
 `
 

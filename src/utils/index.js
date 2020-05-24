@@ -16,10 +16,19 @@ export const removeTagInString = (description) => {
     return removedString;
 }
 
-export const imageValidation = (image) => {
+export const imageMediumValidation = (image) => {
     if(image !== null){
         if(image.medium !== null){
             return image.medium;
+        }
+    }
+    return "/images/EmptyState.jpg";
+}
+
+export const imageOriginalValidation = (image) => {
+    if(image !== null){
+        if(image.original !== null){
+            return image.original;
         }
     }
     return "/images/EmptyState.jpg";
