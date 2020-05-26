@@ -45,7 +45,8 @@ if('serviceWorker' in navigator){
     try {
       const registration = await navigator.serviceWorker.register('/service-worker.js')
       console.log('ServiceWorker registration successful with scope: ', registration.scope);
-      renderAtActiveCondition(0);
+      // renderAtActiveCondition(0);
+      renderReactDom();
     } catch(err) {
       console.log('ServiceWorker registration failed: ', err);
       renderReactDom();
