@@ -2,7 +2,9 @@ import videos from'../apis/videos'
 import history from '../history';
 import { 
     FETCH_POPULAR,
-    FETCH_SEARCH
+    FETCH_SEARCH,
+    SIGN_IN,
+    SIGN_OUT
 } from './types';
 
 export const fetchPopular = () => async (dispatch) => {
@@ -16,4 +18,16 @@ export const fetchSearch = (keyword) => async (dispatch) => {
             history.push(`/search/${keyword}`);
         })
 }
+
+export const signIn = () => {
+    return{
+        type: SIGN_IN
+    };
+};
+
+export const signOut = () => {
+    return{
+        type: SIGN_OUT
+    };
+};
 

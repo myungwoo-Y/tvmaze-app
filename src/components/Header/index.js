@@ -1,15 +1,36 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {LogoContainer, ItemsStyle, SearchIconStyle, NavStyle, MenuContainer, LinkStyle} from './Header.styles'
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchSearch } from '../../actions';
+import { fetchSearch, signOut } from '../../actions';
+import firebase from '../../firebase';
 
-const Header = ({ fetchSearch }) => {
+const Header = ({ fetchSearch, isSignedIn, signOut }) => {
     const [isToggled, setIsToggled] = useState(false);
     const [searchWord, setSearchWord] = useState('');
     const clickMenu = () => {
         setIsToggled(!isToggled);
     }
+
+    // useEffect(() => {
+    //     setInterval(() => {
+    //         Notification.requestPermission(function(result) {
+    //             console.log("In interval")
+    //             if (result === 'granted') {
+    //                 console.log(result)
+    //                 navigator.serviceWorker.ready.then(function(registration) {
+    //                     console.log("Notification Start")
+    //                     registration.showNotification('Hello world', {
+    //                         body: 'Series Notification',
+    //                         icon: '/images/logo.png',
+    //                         vibrate: [200, 100, 200, 100, 200, 100, 200],
+    //                         tag: 'vibration-sample'
+    //                     });
+    //               });
+    //             }
+    //           });
+    //     }, 5 * 1000);
+    // }, []);
 
     const clickSearch = () => {
         fetchSearch(searchWord);
@@ -27,6 +48,12 @@ const Header = ({ fetchSearch }) => {
 
     const handleLinckClick = (event) => {
         setIsToggled(false);
+    }
+
+    const handleSignout = () => {
+        firebase.logout();
+        signOut();
+        alert("로그아웃 하였습니다.")
     }
 
     return(
@@ -54,21 +81,32 @@ const Header = ({ fetchSearch }) => {
                             onClick={handleLinckClick} 
                             to="/"
                         >
-                            찜한 시리즈
+                            My Series
                         </LinkStyle>
                     </li>
                     <li>
                         <LinkStyle 
                             onClick={handleLinckClick} 
-                            to="/"
+                            to="/login"
+                            style={{display: isSignedIn ? "none" : "block"}}
                         >
                             Login
                         </LinkStyle>
                     </li>
                     <li>
                         <LinkStyle 
-                            onClick={handleLinckClick} 
+                            onClick={handleSignout} 
                             to="/"
+                            style={{display: isSignedIn ? "block" : "none"}}
+                        >
+                            Logout
+                        </LinkStyle>
+                    </li>
+                    <li>
+                        <LinkStyle 
+                            onClick={handleLinckClick} 
+                            to="/signup"
+                            style={{display: isSignedIn ? "none" : "block"}}
                         >
                             Sign Up
                         </LinkStyle>
@@ -89,4 +127,9 @@ const Header = ({ fetchSearch }) => {
         </NavStyle>
     )
 }
-export default connect(null, { fetchSearch })(Header);
+
+const mapStateToProps = (state) => {
+    return { isSignedIn: state.auth.isSignedIn};
+}
+
+export default connect(mapStateToProps, { fetchSearch, signOut })(Header);

@@ -5,7 +5,7 @@ import { fetchSearch } from '../../actions';
 import { Container } from 'react-bootstrap';
 const SearchResult = ({videos, match, fetchSearch}) => {
     useEffect(() => {
-        if(videos.length == 0){
+        if(videos.length === 0){
             fetchSearch(match.params.word)
         }
     }, [])

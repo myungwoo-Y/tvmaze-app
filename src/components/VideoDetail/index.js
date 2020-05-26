@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import videos from '../../apis/videos'
-import {Row, Col, Button} from 'react-bootstrap';
+import {Row, Col} from 'react-bootstrap';
 import { DesciptionStyle, MainPosterStyle, MainInfoContainer, ButtonStyles } from './VideoDetail.styles'
 import MySpinner from '../MySpinner';
 import SeasonsShow from '../SeasonsShow';
-import { removeTagInString, imageMediumValidation, imageOriginalValidation } from '../../utils'
+import { removeTagInString, imageOriginalValidation } from '../../utils'
+import firebase from '../../firebase';
+
 const VideoDetail = ({match}) => {
     const [video, setVideo] = useState(null);
     const videoId = match.params.id;
@@ -21,6 +23,13 @@ const VideoDetail = ({match}) => {
         fetchVideo();
     }, [])
 
+    const addHandler = () => {
+        firebase.addSeries(videoId, video)
+        .then(() => {
+            alert("성공적으로 추가하였습니다.")
+        })
+    }
+
     const videoRender = () => {
         if(video === null){
             return(
@@ -35,7 +44,7 @@ const VideoDetail = ({match}) => {
                     <Row>
                         <Col xs={12} md={6} className="text-center">
                             <MainPosterStyle>
-                                <img src={image}></img>
+                                <img src={image} alt="Main Poster"></img>
                             </MainPosterStyle>
                         </Col>
                         <Col xs={12} md={6}>
@@ -50,6 +59,7 @@ const VideoDetail = ({match}) => {
                             <ButtonStyles
                                 variant="success"
                                 className="rounded-circle mt-3"
+                                onClick={addHandler}
                             >   
                                 <i className="fas fa-plus"></i>
 

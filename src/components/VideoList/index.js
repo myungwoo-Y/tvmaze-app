@@ -20,7 +20,6 @@ const VideoList = ({videos, objectType}) => {
     }
 
     const popularVideoList = () => videos.map((videoObject) => {
-        console.log(videoObject)
         const video = getVideo(videoObject);
         const image = imageOriginalValidation(video.image);
         const description = video.summary ? video.summary : "";

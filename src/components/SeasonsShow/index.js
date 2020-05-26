@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import videos from '../../apis/videos'
 import ImageGallery from 'react-image-gallery';
 import { GalleryContainer, SeasonContainer, SeasonTitleStyle, DateStyle, SeasonDiscriptionStyle } from './SeasonsShow.styles';
-import { Row, Col } from 'react-bootstrap';
 import { imageMediumValidation, removeTagInString } from '../../utils';
 import EpisodeList from './EpisodeList';
 
@@ -42,6 +41,7 @@ const SeasonsShow = ({videoId}) => {
                 thumbnailTitle : `Season ${i+1}`,
                 description:  `Season ${i+1}`
             })
+            return;
         })
         setItems(newItems);
     }

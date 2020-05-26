@@ -9,6 +9,7 @@
     "axios": "^0.19.2",
     "bootstrap": "^4.5.0",
     "css-loader": "^3.5.3",
+    "firebase": "^7.14.5",
     "lodash": "^4.17.15",
     "node-sass": "^4.14.1",
     "package.json": "^2.0.1",
@@ -34,7 +35,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "start-sw": "yarn build && workbox injectManifest workbox-config.js && serve -s build",
-    "test-sw" : "workbox injectManifest workbox-config.js && yarn start"
+    "test-sw": "workbox injectManifest workbox-config.js && yarn start"
   },
   "eslintConfig": {
     "extends": "react-app"

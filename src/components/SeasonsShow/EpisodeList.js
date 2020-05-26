@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import videos from '../../apis/videos';
 import { imageOriginalValidation, removeTagInString } from '../../utils';
 import { EpisodeListContainer } from './SeasonsShow.styles';
 import { Row, Col, CardGroup, Card } from 'react-bootstrap';
@@ -7,7 +6,7 @@ const EpisodeList = ({episodes, seasonNumber}) => {
     const [ episodesById, setEpisodesById ] = useState(null);
 
     useEffect(() => {
-        const newEpisodes = episodes.filter((episode) => (episode.season == seasonNumber));
+        const newEpisodes = episodes.filter((episode) => (episode.season === seasonNumber));
         setEpisodesById(newEpisodes);
     }, [seasonNumber]);
 

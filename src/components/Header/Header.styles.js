@@ -52,7 +52,7 @@ export const ItemsStyle = styled.div`
     @media screen and (max-width: 800px){
         z-index: ${(props) => props.isToggled ? 2 : -1};
         position: fixed;
-        top: ${(props) => props.isToggled ? "0" : "-220px"};
+        top: ${(props) => props.isToggled ? "0" : "-280px"};
         padding-top: ${(props) => props.isToggled ? "40px" : "0"};
         right: 0px;
         width: 100%;
