@@ -27,7 +27,6 @@ function renderAtActiveCondition(count) {
   navigator.serviceWorker.getRegistrations().then(registrations => {
     const isActive = registrations[0].active;
     if(isActive === null){
-      console.log("Service worker is not activating");
       window.setTimeout(renderAtActiveCondition(count+1), 1000); 
     }else {
       renderReactDom();
