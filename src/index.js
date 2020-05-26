@@ -24,11 +24,6 @@ const renderReactDom = () => {
 }
 
 function renderAtActiveCondition(count) {
-  if(count > 1000){
-    console.log("서비스 워크가 활성화 되지 않습니다.");
-    renderReactDom();
-    return;
-  }
   navigator.serviceWorker.getRegistrations().then(registrations => {
     const isActive = registrations[0].active;
     if(isActive === null){
