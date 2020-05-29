@@ -1,22 +1,35 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import VideoList from '../VideoList';
+import MySpinner from '../MySpinner';
 import { fetchSearch } from '../../actions';
 import { Container } from 'react-bootstrap';
 const SearchResult = ({videos, match, fetchSearch}) => {
+    const [lastWord, setLastWord] = useState("");
+
     useEffect(() => {
-        if(videos.length === 0){
-            fetchSearch(match.params.word)
-        }
-    }, [])
+        
+    }, [match.params.words])
     
-    return(
-        <Container>
-            <VideoList 
-                videos={videos}
-            />
-        </Container>
-    )
+    
+    if(videos.length === 0){
+        console.log(videos)
+        return(
+            <div>
+                <MySpinner/>
+            </div>
+        )
+    }else{
+        console.log(videos)
+        return(
+            <Container>
+                <VideoList 
+                    videos={videos}
+                />
+            </Container>
+        )
+    }
+
 }
 
 const mapStateToProps = (state) => {

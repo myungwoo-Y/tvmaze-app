@@ -1,17 +1,23 @@
 import React, {useEffect, useState} from 'react';
 import videos from '../../apis/videos';
 import VideoList from '../VideoList';
+import { Container } from 'react-bootstrap';
+import { getUsDate } from '../../utils';
+import _ from 'lodash';
+
 const Home = () => {
 
     const [popularVideo, setPopularVideo] = useState([]);
 
-    const popularVideoUrl = '/schedule?country=US&date=2020-05-23';
-
+    const dateString = getUsDate('string');
     useEffect(() => {
         const fetchPopularVideo = async () => {
+            const popularVideoUrl = `/schedule?country=US&date=${dateString}`;
             await videos.get(popularVideoUrl)
                 .then(response => {
-                    setPopularVideo(response.data.slice(0, 10));
+                    const videos = response.data.slice(0, 15);
+                    const removedVideos = _.mapKeys(videos, (o) => { return o.show.id; });
+                    setPopularVideo(Object.values(removedVideos));
                 })
                 .catch(e => {
                     console.log(e)
@@ -22,6 +28,9 @@ const Home = () => {
 
     return(
         <div>
+            <Container className="mt-4 text-center">
+                <h1>Today Series</h1>
+            </Container>
             <VideoList
                 videos={popularVideo}
                 objectType="home"

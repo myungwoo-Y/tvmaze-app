@@ -35,7 +35,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "start-sw": "yarn build && workbox injectManifest workbox-config.js && serve -s build",
-    "test-sw": "workbox injectManifest workbox-config.js && yarn start"
+    "test-sw": "workbox injectManifest workbox-config-test.js && yarn start"
   },
   "eslintConfig": {
     "extends": "react-app"

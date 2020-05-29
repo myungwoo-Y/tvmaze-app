@@ -15,7 +15,6 @@ workbox.routing.registerRoute(
     })
 )
 
-workbox.core.clientsClaim();
 
 workbox.routing.registerRoute(
     /\.(?:png|jpg|jpeg|svg)$/,
@@ -30,18 +29,103 @@ workbox.routing.registerRoute(
     })
 )
 
+
+function getDB() {
+    let db;
+    if (!db) {
+      db = new Promise((resolve, reject) => {
+        const openreq = self.indexedDB.open("MySeries");
+        openreq.onerror = () => {
+          reject(openreq.error);
+        };
+  
+        openreq.onsuccess = () => {
+          resolve(openreq.result);
+        };
+      });
+    }
+    return db;
+}
+
+const getUsDate = (option) => {
+const date = new Date();
+date.setHours(date.getHours() - 14);
+
+if(option === 'string'){
+    return date.toISOString().split('T')[0];
+}else{
+    return date;
+}
+}
+
+const getDayString = () => {
+const date = getUsDate();
+switch(date.getDay()){
+    case 0:
+        return "Sunday";
+    case 1:
+        return "Monday";
+    case 2:
+        return "Tuesday";
+    case 3:
+        return "Wednesday";
+    case 4:
+        return "Thursday";
+    case 5:
+        return "Friday";
+    case 6:
+        return "Saturday";
+    default:
+        return "none";
+}
+}
+  
+const triggerNotification = (series) => {
+const title = series.name;
+const thumbnail = series.image.original.replace("http", "https");;
+self.registration.showNotification(title, {
+    body: "It`s on air today.",
+    icon: thumbnail,
+    vibrate: [200, 100, 200, 100, 200, 100, 200],
+    tag: 'TV Info'
+});
+}
+  
+setInterval(() => {
+const isActive = self.registration.active;
+if(isActive !== null){
+    if(self.indexedDB){
+    getDB()
+        .then(db => {
+            if(db.version === 2){
+                const tx = db.transaction('series', "readwrite");
+                const store = tx.objectStore('series');
+                const allRecords = store.getAll();
+                allRecords.onsuccess = function() {
+                    const allMySeries = allRecords.result; 
+                    allMySeries.forEach(series => {
+                    if(series.status === 'Running'){
+                        const schedule = series.schedule;
+                        const dayString = getDayString();
+                        if(schedule.days.includes(dayString)){
+                            triggerNotification(series);
+                        }
+                    }
+                    });
+                };
+            }
+        })
+    }
+}
+}, 60 * 1000)
+  
+
+workbox.core.clientsClaim();
+
 self.addEventListener('activate', event => {
-    // const title = 'Push Codelab';
-    // const options = {
-    //     body: 'Yay it works.',
-    //     icon: 'images/icon.png',
-    //     badge: 'images/badge.png'
-    // };
-    // console.log("show notification ");
     // event.waitUntil(self.registration.showNotification(title, options));
-  });
-
-
+});
+  
 self.addEventListener('install', event => {
   self.skipWaiting();
 });

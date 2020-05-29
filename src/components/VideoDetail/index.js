@@ -4,12 +4,16 @@ import {Row, Col} from 'react-bootstrap';
 import { DesciptionStyle, MainPosterStyle, MainInfoContainer, ButtonStyles } from './VideoDetail.styles'
 import MySpinner from '../MySpinner';
 import SeasonsShow from '../SeasonsShow';
-import { removeTagInString, imageOriginalValidation } from '../../utils'
+import { removeTagInString, imageOriginalValidation, getDB } from '../../utils'
 import firebase from '../../firebase';
+import { connect } from 'react-redux';
+import { fetchMySeries, deleteSeries } from '../../actions';
+import MySeries from '../MySeries';
 
-const VideoDetail = ({match}) => {
+const VideoDetail = ({ match, fetchMySeries, mySeries, deleteSeries, isSignedIn }) => {
     const [video, setVideo] = useState(null);
     const videoId = match.params.id;
+
     useEffect(() => {
         const fetchVideo = async () => {
             await videos.get(`/shows/${videoId}`)
@@ -24,10 +28,58 @@ const VideoDetail = ({match}) => {
     }, [])
 
     const addHandler = () => {
-        firebase.addSeries(videoId, video)
-        .then(() => {
-            alert("성공적으로 추가하였습니다.")
-        })
+        if(isSignedIn){
+            firebase.addSeries(videoId, video)
+            .then(() => {
+                fetchMySeries();
+                alert("성공적으로 추가하였습니다.");
+            })
+        }else{
+            alert("로그인을 먼저 해주세요")
+        }
+
+    }
+
+    const deleteHandler = () => {
+        if(isSignedIn){
+            firebase.deleteSeries(videoId)
+            .then(() => {
+                deleteSeries(videoId);
+                alert("성공적으로 제거하였습니다.");
+            })
+        }else{
+            alert("로그인을 먼저 해주세요");
+        }
+ 
+    }
+
+    
+
+    const buttonRender = () => {
+        if(mySeries[videoId] === undefined){
+            return(
+                <ButtonStyles
+                    variant="success"
+                    className="rounded-circle mt-3"
+                    onClick={addHandler}
+                >   
+                    <i className="fas fa-plus"></i>
+    
+                </ButtonStyles>
+            )
+        }else{
+            return(
+                <ButtonStyles
+                    variant="danger"
+                    className="rounded-circle mt-3"
+                    onClick={deleteHandler}
+                >   
+                    <i className="fas fa-minus"></i>
+    
+                </ButtonStyles>
+            )
+        }
+
     }
 
     const videoRender = () => {
@@ -56,14 +108,7 @@ const VideoDetail = ({match}) => {
                                 </div>
                                 {removeTagInString(description)}
                             </DesciptionStyle>
-                            <ButtonStyles
-                                variant="success"
-                                className="rounded-circle mt-3"
-                                onClick={addHandler}
-                            >   
-                                <i className="fas fa-plus"></i>
-
-                            </ButtonStyles>
+                            {buttonRender()}
                         </Col>
                     </Row>
                     <SeasonsShow videoId={videoId}/>
@@ -80,4 +125,11 @@ const VideoDetail = ({match}) => {
     )
 }
 
-export default VideoDetail;
+const mapStateProps = state => {
+    return{
+        mySeries: state.videos.mySeries,
+        isSignedIn: state.auth.isSignedIn
+    }
+}
+
+export default connect(mapStateProps, { fetchMySeries, deleteSeries })(VideoDetail);

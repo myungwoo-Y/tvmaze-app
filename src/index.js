@@ -23,23 +23,33 @@ const renderReactDom = () => {
   );
 }
 
-function renderAtActiveCondition(count) {
-  navigator.serviceWorker.getRegistrations().then(registrations => {
-    const isActive = registrations[0].active;
-    if(isActive === null){
-      window.setTimeout(renderAtActiveCondition(count+1), 1000); 
-    }else {
-      renderReactDom();
-    }
-  });
-}
+let intervalId = null;
+let count = 0;
+const intervalTime = 500;
+const maxCount = (1000 / intervalTime) * 60;
+const activeCheckInterval = () => {
+  count++;
+  if(count > maxCount){
+    renderReactDom();
+  }else{
+    navigator.serviceWorker.getRegistrations().then(registrations => {
+      const isActive = registrations[0].active;
+      if(isActive !== null){
+        renderReactDom();
+        clearInterval(intervalId);
+      }
+    });
+  }
+};
+
+// renderReactDom();
 
 if('serviceWorker' in navigator){
   window.addEventListener('load', async () => {
     try {
       const registration = await navigator.serviceWorker.register('/service-worker.js')
       console.log('ServiceWorker registration successful with scope: ', registration.scope);
-      renderAtActiveCondition(0);
+      intervalId = setInterval(activeCheckInterval, intervalTime);
     } catch(err) {
       console.log('ServiceWorker registration failed: ', err);
       renderReactDom();

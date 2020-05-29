@@ -8,17 +8,22 @@ import SearchResult from './SearchResult';
 import SingUp from './SignUp';
 import Login from './Login';
 import { connect } from 'react-redux';
-import { signIn, signOut } from '../actions';
+import { signIn, signOut, fetchMySeries, deleteAllMySeries } from '../actions';
 import firebase from '../firebase';
+import MySeries from './MySeries';
 
-const App = ({ signIn, signOut }) => {
+const App = ({ signIn, signOut, fetchMySeries }) => {
   useEffect(() => {
     firebase.isInitialized()
       .then(user => {
         if(user){
           signIn();
+          fetchMySeries();
+          console.log("fetch Series")
         }else{
           signOut();
+          deleteAllMySeries();
+          console.log("delete MySereis");
         }
       })
   }, []);
@@ -28,6 +33,7 @@ const App = ({ signIn, signOut }) => {
          <Header/>
               <Switch>
                   <Route path="/" exact component={Home}/>
+                  <Route path="/myseries" exact component={MySeries}/>
                   <Route path="/video/:id" exact component={VideoDetail}/>
                   <Route path="/signup" exact component={SingUp}/>
                   <Route path="/login" exact component={Login}/>
@@ -38,4 +44,4 @@ const App = ({ signIn, signOut }) => {
   );
 }
 
-export default connect(null, { signIn, signOut })(App);
+export default connect(null, { signIn, signOut, fetchMySeries, deleteAllMySeries })(App);

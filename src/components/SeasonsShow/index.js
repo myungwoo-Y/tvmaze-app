@@ -86,7 +86,7 @@ const SeasonsShow = ({videoId}) => {
             return <></>
         }else{
             const season = seasons[seasonNumber-1];
-            const description = removeTagInString(season.summary);
+            const description = removeTagInString(season.summary ? season.summary : "");
             const start = season.premiereDate;
             const end = season.endDate;
 

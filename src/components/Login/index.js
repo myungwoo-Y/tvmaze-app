@@ -3,9 +3,9 @@ import {Form, Button, Container, Spinner} from 'react-bootstrap';
 import { LoginContainer } from './Login.styles';
 import firebase from '../../firebase'
 import { connect } from 'react-redux'
-import { signIn } from '../../actions';
+import { signIn, fetchMySeries } from '../../actions';
 
-const Login = ({ history, signIn }) => {
+const Login = ({ history, signIn, fetchMySeries }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
@@ -16,6 +16,7 @@ const Login = ({ history, signIn }) => {
             await firebase.login(email, password)
             setLoading(false);
             signIn();
+            fetchMySeries();
             history.replace('/')
             alert("로그인에 성공하였습니다.")
 		} catch(error) {
@@ -48,4 +49,4 @@ const Login = ({ history, signIn }) => {
     )
 }
 
-export default connect(null, { signIn })(Login);
+export default connect(null, { signIn, fetchMySeries })(Login);

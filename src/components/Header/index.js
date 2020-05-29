@@ -1,39 +1,20 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState } from 'react';
 import {LogoContainer, ItemsStyle, SearchIconStyle, NavStyle, MenuContainer, LinkStyle} from './Header.styles'
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchSearch, signOut } from '../../actions';
+import { fetchSearch, signOut, deleteAllMySeries } from '../../actions';
 import firebase from '../../firebase';
 
-const Header = ({ fetchSearch, isSignedIn, signOut }) => {
+const Header = ({ fetchSearch, isSignedIn, signOut, deleteAllMySeries }) => {
     const [isToggled, setIsToggled] = useState(false);
     const [searchWord, setSearchWord] = useState('');
     const clickMenu = () => {
         setIsToggled(!isToggled);
     }
 
-    // useEffect(() => {
-    //     setInterval(() => {
-    //         Notification.requestPermission(function(result) {
-    //             console.log("In interval")
-    //             if (result === 'granted') {
-    //                 console.log(result)
-    //                 navigator.serviceWorker.ready.then(function(registration) {
-    //                     console.log("Notification Start")
-    //                     registration.showNotification('Hello world', {
-    //                         body: 'Series Notification',
-    //                         icon: '/images/logo.png',
-    //                         vibrate: [200, 100, 200, 100, 200, 100, 200],
-    //                         tag: 'vibration-sample'
-    //                     });
-    //               });
-    //             }
-    //           });
-    //     }, 5 * 1000);
-    // }, []);
-
-    const clickSearch = () => {
+    const clickSearch = (event) => {
         fetchSearch(searchWord);
+        setSearchWord("");
     }
 
     const handleEnter = (event) => {
@@ -46,13 +27,14 @@ const Header = ({ fetchSearch, isSignedIn, signOut }) => {
         setSearchWord(event.target.value);
     }
 
-    const handleLinckClick = (event) => {
+    const handleLinckClick = () => {
         setIsToggled(false);
     }
 
     const handleSignout = () => {
         firebase.logout();
         signOut();
+        deleteAllMySeries();
         alert("로그아웃 하였습니다.")
     }
 
@@ -79,7 +61,8 @@ const Header = ({ fetchSearch, isSignedIn, signOut }) => {
                     <li>
                         <LinkStyle 
                             onClick={handleLinckClick} 
-                            to="/"
+                            to="/myseries"
+                            style={{display: isSignedIn ? "block" : "none"}}
                         >
                             My Series
                         </LinkStyle>
@@ -113,9 +96,11 @@ const Header = ({ fetchSearch, isSignedIn, signOut }) => {
                     </li>
                 </ItemsStyle>
                 <SearchIconStyle>
+                    <labe className="d-none">Search</labe>
                     <input 
                         type="search" 
                         placeholder="Search"
+                        value={searchWord}
                         onChange={onSearchChange}
                         onKeyDown={handleEnter}
                     />
@@ -132,4 +117,4 @@ const mapStateToProps = (state) => {
     return { isSignedIn: state.auth.isSignedIn};
 }
 
-export default connect(mapStateToProps, { fetchSearch, signOut })(Header);
+export default connect(mapStateToProps, { fetchSearch, signOut, deleteAllMySeries })(Header);

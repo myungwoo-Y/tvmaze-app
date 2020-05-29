@@ -19,8 +19,7 @@ class Firebase {
 	}
 
 	login(email, password) {
-        const res = this.auth.signInWithEmailAndPassword(email, password);
-        console.log(this.auth.currentUser);
+        return this.auth.signInWithEmailAndPassword(email, password);
 	}
 
 	logout() {
@@ -35,8 +34,12 @@ class Firebase {
     }
     
     async getAllSeries(){
+		if(!this.auth.currentUser) {
+			return alert('Not authorized');
+        }
+		const userName = this.getCurrentUsername();
         const series = [];
-        await this.db.collection('users_series').get()
+        await this.db.collection(userName).get()
             .then(snapshot => {
                 snapshot.forEach(doc => {
                     series.push(doc.data().series);
@@ -46,7 +49,6 @@ class Firebase {
                 console.log('Error getting documents', err);
             });
 
-          console.log(series);
           return series;
     }
 
@@ -54,11 +56,20 @@ class Firebase {
 		if(!this.auth.currentUser) {
 			return alert('Not authorized');
         }
-        
-       this.getAllSeries();
-		return this.db.doc(`users_series/${seriesId}`).set({
+		const userName = this.getCurrentUsername();
+       	this.getAllSeries();
+		return this.db.doc(`${userName}/${seriesId}`).set({
 			series
 		});
+	}
+
+	deleteSeries(seriesId){
+		if(!this.auth.currentUser) {
+			return alert('Not authorized');
+        }
+		const userName = this.getCurrentUsername();
+       	this.getAllSeries();
+		return this.db.doc(`${userName}/${seriesId}`).delete();
 	}
 
 	isInitialized() {
@@ -84,11 +95,6 @@ class Firebase {
         console.log(this.auth.currentUser);
         return this.auth.currentUser !== null;
     }
-
-	async getCurrentUserQuote() {
-		const series = await this.db.doc(`users_codedamn_video/${this.auth.currentUser.uid}`).get();
-		return series.get('quote');
-	}
 }
 
 export default new Firebase();

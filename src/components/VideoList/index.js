@@ -1,6 +1,6 @@
 import React from 'react';
 import history from '../../history';
-import { removeTagInString, imageOriginalValidation } from '../../utils'
+import { removeTagInString, imageOriginalValidation, getShortString } from '../../utils'
 import {Card, Row, Col, OverlayTrigger, Tooltip} from 'react-bootstrap';
 import { ListContainer } from './VideoList.styles';
 
@@ -11,18 +11,17 @@ const VideoList = ({videos, objectType}) => {
     }
 
     const getVideo = (videoObject) => {
-        // if(objectType === "home"){
-        //     return videoObject;
-        // }else{
-        //     return videoObject.show;
-        // }
-        return videoObject.show;
+        if(objectType === "mySeries"){
+            return videoObject;
+        }else{
+            return videoObject.show;
+        }
     }
 
     const popularVideoList = () => videos.map((videoObject) => {
         const video = getVideo(videoObject);
         const image = imageOriginalValidation(video.image);
-        const description = video.summary ? video.summary : "";
+        const description = removeTagInString(video.summary ? video.summary : "");
 
         return(
             <Col xs={12} md={6} lg={3}  
@@ -35,7 +34,7 @@ const VideoList = ({videos, objectType}) => {
                     overlay={
                     <Tooltip id={`tooltip-${video.id}`}>
                         <div className="text-bold">
-                            {removeTagInString(description)}
+                            {getShortString(description)}
                         </div>
                     </Tooltip>
                     }
