@@ -44,23 +44,23 @@ const activeCheckInterval = () => {
   }
 };
 
-renderReactDom();
+// renderReactDom();
 
-// if('serviceWorker' in navigator){
-//   window.addEventListener('load', async () => {
-//     try {
-//       const registration = await navigator.serviceWorker.register('/service-worker.js')
-//       console.log('ServiceWorker registration successful with scope: ', registration.scope);
-//       intervalId = setInterval(activeCheckInterval, intervalTime);
-//     } catch(err) {
-//       console.log('ServiceWorker registration failed: ', err);
-//       renderReactDom();
-//     }
-//   });
-// }else{
-//   console.log("서비스워커를 지원하지 않습니다.")
-//   renderReactDom();
-// }
+if('serviceWorker' in navigator){
+  window.addEventListener('load', async () => {
+    try {
+      const registration = await navigator.serviceWorker.register('/service-worker.js')
+      console.log('ServiceWorker registration successful with scope: ', registration.scope);
+      intervalId = setInterval(activeCheckInterval, intervalTime);
+    } catch(err) {
+      console.log('ServiceWorker registration failed: ', err);
+      renderReactDom();
+    }
+  });
+}else{
+  console.log("서비스워커를 지원하지 않습니다.")
+  renderReactDom();
+}
 
 
 
