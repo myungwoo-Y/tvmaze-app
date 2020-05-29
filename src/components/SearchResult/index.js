@@ -4,14 +4,7 @@ import VideoList from '../VideoList';
 import MySpinner from '../MySpinner';
 import { fetchSearch } from '../../actions';
 import { Container } from 'react-bootstrap';
-const SearchResult = ({videos, match, fetchSearch}) => {
-    const [lastWord, setLastWord] = useState("");
-
-    useEffect(() => {
-        
-    }, [match.params.words])
-    
-    
+const SearchResult = ({videos, match}) => {    
     if(videos.length === 0){
         console.log(videos)
         return(

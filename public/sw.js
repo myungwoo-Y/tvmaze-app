@@ -136,8 +136,8 @@ const handler = workbox.precaching.createHandlerBoundToURL('/index.html');
 const navigationRoute = new workbox.routing.NavigationRoute(handler, {
   allowlist: [
     new RegExp('/'),
-    new RegExp('/video/'),
-    new RegExp('/search/'),
+    new RegExp('/video/:id'),
+    new RegExp('/search/:id'),
 
   ],
   denylist: [
