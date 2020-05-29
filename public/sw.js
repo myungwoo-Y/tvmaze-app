@@ -109,33 +109,33 @@ const triggerNotification = (series) => {
     });
 }
   
-setInterval(() => {
-const isActive = self.registration.active;
-if(isActive !== null){
-    if(self.indexedDB){
-    getDB()
-        .then(db => {
-            if(db.version === 2){
-                const tx = db.transaction('series', "readwrite");
-                const store = tx.objectStore('series');
-                const allRecords = store.getAll();
-                allRecords.onsuccess = function() {
-                    const allMySeries = allRecords.result; 
-                    allMySeries.forEach((series, i) => {
-                        if(series.status === 'Running'){
-                            const schedule = series.schedule;
-                            const dayString = getDayString();
-                            if(schedule.days.includes(dayString)){
-                                setTimeout(triggerNotification(series), 1000 * 5 * i);
-                            }
-                        }
-                    });
-                };
-            }
-        })
-    }
-}
-}, 10 * 1000)
+// setInterval(() => {
+// const isActive = self.registration.active;
+// if(isActive !== null){
+//     if(self.indexedDB){
+//     getDB()
+//         .then(db => {
+//             if(db.version === 2){
+//                 const tx = db.transaction('series', "readwrite");
+//                 const store = tx.objectStore('series');
+//                 const allRecords = store.getAll();
+//                 allRecords.onsuccess = function() {
+//                     const allMySeries = allRecords.result; 
+//                     allMySeries.forEach((series, i) => {
+//                         if(series.status === 'Running'){
+//                             const schedule = series.schedule;
+//                             const dayString = getDayString();
+//                             if(schedule.days.includes(dayString)){
+//                                 setTimeout(triggerNotification(series), 1000 * 5 * i);
+//                             }
+//                         }
+//                     });
+//                 };
+//             }
+//         })
+//     }
+// }
+// }, 10 * 1000)
   
 workbox.core.clientsClaim();
   
