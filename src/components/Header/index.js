@@ -96,7 +96,7 @@ const Header = ({ fetchSearch, isSignedIn, signOut, deleteAllMySeries }) => {
                     </li>
                 </ItemsStyle>
                 <SearchIconStyle>
-                    <labe className="d-none">Search</labe>
+                    <label className="d-none">Search</label>
                     <input 
                         type="search" 
                         placeholder="Search"

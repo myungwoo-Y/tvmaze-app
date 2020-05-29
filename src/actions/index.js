@@ -17,6 +17,8 @@ export const fetchPopular = () => async (dispatch) => {
 };
 
 export const fetchSearch = (keyword) => async (dispatch) => {
+    console.log(keyword);
+    console.log("in fectch")
     if(keyword === ""){
         alert("키워드를 입력해주세요")
     }else{
@@ -30,7 +32,7 @@ export const fetchSearch = (keyword) => async (dispatch) => {
 }
 
 export const fetchMySeries = () => async (dispatch) => {
-    // Notification.requestPermission();
+    Notification.requestPermission();
     console.log("in fetch series")
     if(navigator.onLine) { // true|false
         await firbase.getAllSeries()

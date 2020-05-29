@@ -4,16 +4,20 @@ import VideoList from '../VideoList';
 import MySpinner from '../MySpinner';
 import { fetchSearch } from '../../actions';
 import { Container } from 'react-bootstrap';
-const SearchResult = ({videos, match}) => {    
+const SearchResult = ({videos, match, fetchSearch}) => {
+    useEffect(() => {
+        if(videos.length === 0){
+            fetchSearch(match.params.word)
+        }
+    }, [])
+
     if(videos.length === 0){
-        console.log(videos)
         return(
             <div>
                 <MySpinner/>
             </div>
         )
     }else{
-        console.log(videos)
         return(
             <Container>
                 <VideoList 

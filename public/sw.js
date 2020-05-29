@@ -1,8 +1,24 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js");
 workbox.routing.registerRoute(
     new RegExp('https://api.tvmaze.com/(.*)'),
-    new workbox.strategies.StaleWhileRevalidate({
+    new workbox.strategies.CacheFirst({
         cacheName: 'tvmaze-cache',
+        plugins: [
+            new workbox.expiration.ExpirationPlugin({
+                maxEntries: 30,
+                maxAgeSeconds: 7 * 24 * 60 * 60
+            }),
+            new workbox.cacheableResponse.CacheableResponse({
+                statuses: [0, 200]
+            }),
+        ]
+    })
+)
+
+workbox.routing.registerRoute(
+    new RegExp('http://localhost:3000/static/(.*)'),
+    new workbox.strategies.StaleWhileRevalidate({
+        cacheName: 'static-cache',
         plugins: [
             new workbox.expiration.ExpirationPlugin({
                 maxEntries: 30,
@@ -81,14 +97,16 @@ switch(date.getDay()){
 }
   
 const triggerNotification = (series) => {
-const title = series.name;
-const thumbnail = series.image.original.replace("http", "https");;
-self.registration.showNotification(title, {
-    body: "It`s on air today.",
-    icon: thumbnail,
-    vibrate: [200, 100, 200, 100, 200, 100, 200],
-    tag: 'TV Info'
-});
+    console.log(series);
+    const title = series.name ? series.name : "No title";
+    const thumbnail = series.image.original.replace("http", "https");
+    const schedules = series.schedule;
+    self.registration.showNotification(title, {
+        body: `It will be on air today at ${schedules.time}.`,
+        icon: thumbnail,
+        vibrate: [200, 100, 200, 100, 200, 100, 200],
+        tag: 'TV Info'
+    });
 }
   
 setInterval(() => {
@@ -103,31 +121,33 @@ if(isActive !== null){
                 const allRecords = store.getAll();
                 allRecords.onsuccess = function() {
                     const allMySeries = allRecords.result; 
-                    allMySeries.forEach(series => {
-                    if(series.status === 'Running'){
-                        const schedule = series.schedule;
-                        const dayString = getDayString();
-                        if(schedule.days.includes(dayString)){
-                            triggerNotification(series);
+                    allMySeries.forEach((series, i) => {
+                        if(series.status === 'Running'){
+                            const schedule = series.schedule;
+                            const dayString = getDayString();
+                            if(schedule.days.includes(dayString)){
+                                setTimeout(triggerNotification(series), 1000 * 5 * i);
+                            }
                         }
-                    }
                     });
                 };
             }
         })
     }
 }
-}, 60 * 1000)
+}, 10 * 1000)
   
-
 workbox.core.clientsClaim();
-
-self.addEventListener('activate', event => {
-    // event.waitUntil(self.registration.showNotification(title, options));
-});
   
 self.addEventListener('install', event => {
-  self.skipWaiting();
+    console.log('static-cache installing..');
+    event.waitUntil(
+        caches.open('static-cache')
+        .then(cache =>  
+            cache.addAll(['/static/js/bundle.js','/static/js/0.chunk.js','/static/js/main.chunk.js'])
+        )
+    )
+    self.skipWaiting();
 });
 
 workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
