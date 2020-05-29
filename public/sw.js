@@ -141,12 +141,12 @@ workbox.core.clientsClaim();
   
 self.addEventListener('install', event => {
     console.log('static-cache installing..');
-    // event.waitUntil(
-    //     caches.open('static-cache')
-    //     .then(cache =>  
-    //         cache.addAll(['/static/js/bundle.js','/static/js/0.chunk.js','/static/js/main.chunk.js'])
-    //     )
-    // )
+    event.waitUntil(
+        caches.open('static-cache')
+        .then(cache =>  
+            cache.addAll(['/static/js/bundle.js','/static/js/0.chunk.js','/static/js/main.chunk.js'])
+        )
+    )
     self.skipWaiting();
 });
 
