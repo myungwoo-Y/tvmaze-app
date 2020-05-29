@@ -23,9 +23,10 @@ const renderReactDom = () => {
   );
 }
 
+
 let intervalId = null;
 let count = 0;
-const intervalTime = 1000;
+const intervalTime = 500;
 const maxCount = (1000 / intervalTime) * 60;
 const activeCheckInterval = () => {
   count++;
@@ -33,18 +34,15 @@ const activeCheckInterval = () => {
     renderReactDom();
   }else{
     navigator.serviceWorker.getRegistrations().then(registrations => {
-      if(registrations[0] !== undefined){
-        const isActive = registrations[0].active;
-        if(isActive !== null){
-          renderReactDom();
-          clearInterval(intervalId);
-        }
+      const isActive = registrations[0].active;
+      console.log(isActive)
+      if(isActive !== null){
+        renderReactDom();
+        clearInterval(intervalId);
       }
     });
   }
 };
-
-// renderReactDom();
 
 if('serviceWorker' in navigator){
   window.addEventListener('load', async () => {
@@ -57,6 +55,7 @@ if('serviceWorker' in navigator){
       renderReactDom();
     }
   });
+  console.log("render")
 }else{
   console.log("서비스워커를 지원하지 않습니다.")
   renderReactDom();

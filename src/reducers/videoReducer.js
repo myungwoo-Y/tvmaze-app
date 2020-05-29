@@ -1,6 +1,4 @@
-import _mapKeys from 'lodash/mapKeys';
-import _omit from 'lodash/omit';
-
+import _ from 'lodash';
 import {
     FETCH_POPULAR,
     FETCH_SEARCH,
@@ -20,13 +18,13 @@ export default (state = INITAL_STATE, action) => {
         case FETCH_POPULAR:
             return {...state, popular: action.payload};   
         case FETCH_SEARCH:
-            return {...state, searchResult: _mapKeys(action.payload, (o) => { return o.show.id; })};   
+            return {...state, searchResult: _.mapKeys(action.payload, (o) => { return o.show.id; })};   
         case FETCH_MY_SERIES:
-            return {...state, mySeries: _mapKeys(action.payload, (o) => { return o.id; })};
+            return {...state, mySeries: _.mapKeys(action.payload, (o) => { return o.id; })};
         case DELETE_ALL_MY_SERIES:
             return {...state, mySeries: {}};
         case DELETE_SERIES:
-            const newMySeries = _omit(state.mySeries, action.payload);
+            const newMySeries = _.omit(state.mySeries, action.payload);
             return {...state, mySeries: newMySeries};
         default:
             return state;

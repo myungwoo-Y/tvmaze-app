@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-import media from 'styled-media-query';
-
+import media from "styled-media-query";
 
 export const ListContainer = styled.div`
     margin-top: 50px;
@@ -14,7 +13,7 @@ export const ListContainer = styled.div`
         padding: 0;
         img{
             width: 100vw;
-            height: 60vw;
+            height: 70vw;d
         }
     `}
 
@@ -22,27 +21,15 @@ export const ListContainer = styled.div`
         width: 750px;
         img{
             width: 100%;
-            height: 380px;
+            height: 400px;
         }
     `}
 
     ${media.between("992px", "1200px")`
         width: 970px;
-        img{
-            width: 100%;
-            height: 350px;
-        }
     `}
 
     ${media.greaterThan("1200px")`
         width: 1170px;
-        img{
-            width: 100%;
-            height: 420px;
-        }
     `}
-
-
 `
-
-

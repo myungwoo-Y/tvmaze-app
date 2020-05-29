@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, {useState, useEffect} from 'react';
 import {LogoContainer, ItemsStyle, SearchIconStyle, NavStyle, MenuContainer, LinkStyle} from './Header.styles'
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchSearch, signOut, deleteAllMySeries } from '../../actions';
 import firebase from '../../firebase';
+import history from '../../history';
 
 const Header = ({ fetchSearch, isSignedIn, signOut, deleteAllMySeries }) => {
     const [isToggled, setIsToggled] = useState(false);
@@ -12,9 +13,28 @@ const Header = ({ fetchSearch, isSignedIn, signOut, deleteAllMySeries }) => {
         setIsToggled(!isToggled);
     }
 
-    const clickSearch = (event) => {
+    // useEffect(() => {
+    //     setInterval(() => {
+    //         Notification.requestPermission(function(result) {
+    //             console.log("In interval")
+    //             if (result === 'granted') {
+    //                 console.log(result)
+    //                 navigator.serviceWorker.ready.then(function(registration) {
+    //                     console.log("Notification Start")
+    //                     registration.showNotification('Hello world', {
+    //                         body: 'Series Notification',
+    //                         icon: '/images/logo.png',
+    //                         vibrate: [200, 100, 200, 100, 200, 100, 200],
+    //                         tag: 'vibration-sample'
+    //                     });
+    //               });
+    //             }
+    //           });
+    //     }, 5 * 1000);
+    // }, []);
+
+    const clickSearch = () => {
         fetchSearch(searchWord);
-        setSearchWord("");
     }
 
     const handleEnter = (event) => {
@@ -96,11 +116,9 @@ const Header = ({ fetchSearch, isSignedIn, signOut, deleteAllMySeries }) => {
                     </li>
                 </ItemsStyle>
                 <SearchIconStyle>
-                    <label className="d-none">Search</label>
                     <input 
                         type="search" 
                         placeholder="Search"
-                        value={searchWord}
                         onChange={onSearchChange}
                         onKeyDown={handleEnter}
                     />

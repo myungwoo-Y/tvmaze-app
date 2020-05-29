@@ -17,67 +17,18 @@ export const fetchPopular = () => async (dispatch) => {
 };
 
 export const fetchSearch = (keyword) => async (dispatch) => {
-    console.log(keyword);
-    console.log("in fectch")
-    if(keyword === ""){
-        alert("키워드를 입력해주세요")
-    }else{
-        history.push(`/search/${keyword}`);
-        await videos.get(`/search/shows?q=${keyword}`)
-            .then(response=>{
-                dispatch({type: FETCH_SEARCH, payload: response.data});
-            })
-    }
-   
+    await videos.get(`/search/shows?q=${keyword}`)
+        .then(response=>{
+            dispatch({type: FETCH_SEARCH, payload: response.data});
+            history.push(`/search/${keyword}`);
+        })
 }
 
 export const fetchMySeries = () => async (dispatch) => {
-    Notification.requestPermission();
-    console.log("in fetch series")
-    if(navigator.onLine) { // true|false
-        await firbase.getAllSeries()
+    await firbase.getAllSeries()
         .then(response=>{
-            if (window.indexedDB) {
-                const request = window.indexedDB.open("MySeries", 2);
-                
-                request.onupgradeneeded = function (event) {
-                    console.log("indexedDB.onupgradeneeded");
-                    event.currentTarget.result.createObjectStore('series');
-                };
-
-                request.onsuccess = (event) => {
-                    const db = event.target.result;
-                    const tx = db.transaction('series', "readwrite");
-                    const store = tx.objectStore('series');
-                    response.forEach(data => {
-                        console.log("add : ", data.id)
-                        store.put(data, data.id);
-                    })
-                    db.close();
-                }
-                    
-            }
             dispatch({type: FETCH_MY_SERIES, payload: response});
-        })
-    }else{
-        if (window.indexedDB) {
-            const request = window.indexedDB.open("MySeries", 2);
-            const response = []; 
-            request.onsuccess = (event) => {
-                const db = event.target.result;
-                const tx = db.transaction('series', "readwrite");
-                const store = tx.objectStore('series');
-                const allRecords = store.getAll();
-                allRecords.onsuccess = function() {
-                    const allMySeries = allRecords.result; 
-                    console.log(allMySeries);
-                    dispatch({type: FETCH_MY_SERIES, payload: allMySeries});                    
-                };
-                db.close();
-            }
-        }
-    }
-    
+        });
 }
 
 export const deleteAllMySeries = () => {
@@ -87,21 +38,6 @@ export const deleteAllMySeries = () => {
 };
 
 export const deleteSeries = (seriesId) => {
-    if (window.indexedDB) {
-        const request = window.indexedDB.open("MySeries", 2);
-
-        request.onsuccess = (event) => {
-            const db = event.target.result;
-            const tx = db.transaction('series', "readwrite");
-            const store = tx.objectStore('series');
-            console.log("delete : ", seriesId);
-            store.delete(parseInt(seriesId))
-                .onsuccess = function (event) {
-                    console.log('deleted : ', event);
-                }
-        }
-            
-    }
     return{
         type: DELETE_SERIES,
         payload: seriesId
@@ -121,9 +57,6 @@ export const signIn = () => {
 };
 
 export const signOut = () => {
-    if (window.indexedDB) {
-        indexedDB.deleteDatabase('MySeries', 2)
-    }
     return{
         type: SIGN_OUT
     };

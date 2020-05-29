@@ -4,7 +4,7 @@ import {Row, Col} from 'react-bootstrap';
 import { DesciptionStyle, MainPosterStyle, MainInfoContainer, ButtonStyles } from './VideoDetail.styles'
 import MySpinner from '../MySpinner';
 import SeasonsShow from '../SeasonsShow';
-import { removeTagInString, imageOriginalValidation, getDB } from '../../utils'
+import { removeTagInString, imageOriginalValidation } from '../../utils'
 import firebase from '../../firebase';
 import { connect } from 'react-redux';
 import { fetchMySeries, deleteSeries } from '../../actions';
@@ -13,7 +13,6 @@ import MySeries from '../MySeries';
 const VideoDetail = ({ match, fetchMySeries, mySeries, deleteSeries, isSignedIn }) => {
     const [video, setVideo] = useState(null);
     const videoId = match.params.id;
-
     useEffect(() => {
         const fetchVideo = async () => {
             await videos.get(`/shows/${videoId}`)
@@ -48,7 +47,7 @@ const VideoDetail = ({ match, fetchMySeries, mySeries, deleteSeries, isSignedIn 
                 alert("성공적으로 제거하였습니다.");
             })
         }else{
-            alert("로그인을 먼저 해주세요");
+            alert("로그인을 먼저 해주세요")
         }
  
     }

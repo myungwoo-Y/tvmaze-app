@@ -45,50 +45,11 @@ export const imageOriginalValidation = (image) => {
 // 한국에서 실행한다고 가정하여 시차 고려
 export const getUsDate = (option) => {
     const date = new Date();
-    date.setHours(date.getHours() - 14);
+    date.setHours(date.getHours() - 12);
 
     if(option === 'string'){
         return date.toISOString().split('T')[0];
     }else{
         return date;
     }
-}
-
-export const getDayString = () => {
-    const date = getUsDate();
-    switch(date.getDay()){
-        case 0:
-            return "Sunday";
-        case 1:
-            return "Monday";
-        case 2:
-            return "Tuesday";
-        case 3:
-            return "Wednesday";
-        case 4:
-            return "Thursday";
-        case 5:
-            return "Friday";
-        case 6:
-            return "Saturday";
-        default:
-            return "none";
-    }
-}
-
-export const getDB = () =>  {
-    let db;
-    if (!db) {
-      db = new Promise((resolve, reject) => {
-        const openreq = window.indexedDB.open("MySeries");
-        openreq.onerror = () => {
-          reject(openreq.error);
-        };
-  
-        openreq.onsuccess = () => {
-          resolve(openreq.result);
-        };
-      });
-    }
-    return db;
 }

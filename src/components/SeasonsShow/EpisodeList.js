@@ -6,10 +6,8 @@ const EpisodeList = ({episodes, seasonNumber}) => {
     const [ episodesById, setEpisodesById ] = useState(null);
 
     useEffect(() => {
-        if(episodes !== null){
-            const newEpisodes = episodes.filter((episode) => (episode.season === seasonNumber));
-            setEpisodesById(newEpisodes);
-        }
+        const newEpisodes = episodes.filter((episode) => (episode.season === seasonNumber));
+        setEpisodesById(newEpisodes);
     }, [seasonNumber]);
 
     const renderEpisodes = () => {

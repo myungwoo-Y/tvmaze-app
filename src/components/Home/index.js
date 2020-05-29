@@ -3,7 +3,7 @@ import videos from '../../apis/videos';
 import VideoList from '../VideoList';
 import { Container } from 'react-bootstrap';
 import { getUsDate } from '../../utils';
-import _mapKeys from 'lodash/mapKeys';
+import _ from 'lodash';
 
 const Home = () => {
 
@@ -16,7 +16,7 @@ const Home = () => {
             await videos.get(popularVideoUrl)
                 .then(response => {
                     const videos = response.data.slice(0, 15);
-                    const removedVideos = _mapKeys(videos, (o) => { return o.show.id; });
+                    const removedVideos = _.mapKeys(videos, (o) => { return o.show.id; });
                     setPopularVideo(Object.values(removedVideos));
                 })
                 .catch(e => {
