@@ -14,52 +14,9 @@ const store = createStore(
     composeEnhancers(applyMiddleware(reduxThunk))    
 );
 
-const renderReactDom = () => {
-  ReactDOM.render(
-    <Provider store={store}>  
+ReactDOM.render(
+    <Provider store={store}>
         <App />
-    </Provider>, 
+    </Provider>,
     document.getElementById('root')
-  );
-}
-
-
-let intervalId = null;
-let count = 0;
-const intervalTime = 500;
-const maxCount = (1000 / intervalTime) * 60;
-const activeCheckInterval = () => {
-  count++;
-  if(count > maxCount){
-    renderReactDom();
-  }else{
-    navigator.serviceWorker.getRegistrations().then(registrations => {
-      const isActive = registrations[0].active;
-      console.log(isActive)
-      if(isActive !== null){
-        renderReactDom();
-        clearInterval(intervalId);
-      }
-    });
-  }
-};
-
-if('serviceWorker' in navigator){
-  window.addEventListener('load', async () => {
-    try {
-      const registration = await navigator.serviceWorker.register('/service-worker.js')
-      console.log('ServiceWorker registration successful with scope: ', registration.scope);
-      intervalId = setInterval(activeCheckInterval, intervalTime);
-    } catch(err) {
-      console.log('ServiceWorker registration failed: ', err);
-      renderReactDom();
-    }
-  });
-  console.log("render")
-}else{
-  console.log("서비스워커를 지원하지 않습니다.")
-  renderReactDom();
-}
-
-
-
+);
