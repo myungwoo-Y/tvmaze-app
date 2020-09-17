@@ -138,7 +138,7 @@ if(isActive !== null){
 }, 10 * 1000)
   
 workbox.core.clientsClaim();
-  
+
 self.addEventListener('install', event => {
     console.log('static-cache installing..');
     event.waitUntil(
